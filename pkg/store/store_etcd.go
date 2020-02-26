@@ -93,6 +93,7 @@ func NewEtcdStore(etcdAddrs []string, prefix string, basicAuth BasicAuth) (Store
 		config.Password = basicAuth.password
 	}
 
+	//连接etcd数据库
 	cli, err := clientv3.New(*config)
 
 	if err != nil {

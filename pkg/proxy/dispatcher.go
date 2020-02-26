@@ -242,6 +242,7 @@ func newDispatcher(cnf *Cfg, db store.Store, runner *task.Runner, jsEngineFunc f
 	return rt
 }
 
+//转发请求到目标URL
 func (r *dispatcher) dispatch(reqCtx *fasthttp.RequestCtx, requestTag string) (*apiRuntime, []*dispatchNode, *expr.Ctx) {
 	req := &reqCtx.Request
 	dispatcherRoute := r.route
@@ -262,12 +263,14 @@ func (r *dispatcher) dispatch(reqCtx *fasthttp.RequestCtx, requestTag string) (*
 		return targetAPI, dispatches, exprCtx
 	}
 
+	//是否使用默认值?
 	if targetAPI.meta.UseDefault {
 		log.Debugf("%s: match api %s, and use default force",
 			requestTag,
 			targetAPI.meta.Name)
 	} else {
 		for idx, node := range targetAPI.nodes {
+			//获取调度节点
 			dn := acquireDispathNode()
 			dn.idx = idx
 			dn.api = targetAPI

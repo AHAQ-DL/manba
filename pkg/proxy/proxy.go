@@ -99,6 +99,7 @@ func NewProxy(cfg *Cfg) *Proxy {
 }
 
 func (p *Proxy) init() {
+	log.Info("proxy init")
 	err := p.initDispatcher()
 	if err != nil {
 		log.Fatalf("init route table failed, errors:\n%+v",
@@ -120,6 +121,8 @@ func (p *Proxy) init() {
 }
 
 func (p *Proxy) initDispatcher() error {
+	log.Info("initDispatcher")
+	//连接etcd
 	s, err := store.GetStoreFrom(p.cfg.AddrStore, p.cfg.Namespace, p.cfg.AddrStoreUserName, p.cfg.AddrStorePwd)
 
 	if err != nil {
@@ -131,6 +134,7 @@ func (p *Proxy) initDispatcher() error {
 }
 
 func (p *Proxy) initFilters() {
+	log.Info("init fliters")
 	for _, filter := range p.cfg.Filers {
 		f, err := p.newFilter(filter)
 		if nil != err {
@@ -213,7 +217,9 @@ func (p *Proxy) readyToCopy() {
 }
 
 // ServeFastHTTP http reverse handler by fasthttp
+//http反向处理
 func (p *Proxy) ServeFastHTTP(ctx *fasthttp.RequestCtx) {
+	log.Info("ServeFastHTTP start")
 	var buf bytes.Buffer
 	buf.WriteByte(charLeft)
 	buf.Write(ctx.Method())
@@ -228,6 +234,7 @@ func (p *Proxy) ServeFastHTTP(ctx *fasthttp.RequestCtx) {
 	}
 
 	startAt := time.Now()
+	log.Info("dispatch server")
 	api, dispatches, exprCtx := p.dispatcher.dispatch(ctx, requestTag)
 	if len(dispatches) == 0 &&
 		(nil == api || api.meta.DefaultValue == nil) {
@@ -323,7 +330,7 @@ func (p *Proxy) ServeFastHTTP(ctx *fasthttp.RequestCtx) {
 	p.postRequest(api, dispatches, startAt)
 	releaseExprCtx(exprCtx)
 
-	log.Debugf("%s: dispatch complete",
+	log.Info("%s: dispatch complete",
 		requestTag)
 }
 
@@ -359,6 +366,7 @@ func (p *Proxy) doCopy(req *copyReq) {
 	fasthttp.ReleaseRequest(req.origin)
 }
 
+//真正的请求转发操作，流量前置处理也在这个位置
 func (p *Proxy) doProxy(dn *dispatchNode, adjustH func(*proxyContext)) {
 	if dn.node.meta.UseDefault {
 		dn.maybeDone()

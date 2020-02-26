@@ -29,7 +29,9 @@ var (
 	limit = int64(32)
 )
 
+//载入元数据
 func (r *dispatcher) load() {
+	log.Info("load meteData")
 	go r.watch()
 
 	r.loadProxies()

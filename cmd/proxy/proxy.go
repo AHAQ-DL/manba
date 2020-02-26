@@ -100,7 +100,7 @@ func main() {
 	}
 
 	log.InitLog()
-
+	log.Debug("start")
 	if *limitCpus == 0 {
 		runtime.GOMAXPROCS(runtime.NumCPU())
 	} else {

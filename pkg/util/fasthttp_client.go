@@ -2,6 +2,7 @@ package util
 
 import (
 	"bufio"
+	"github.com/labstack/gommon/log"
 	"io"
 	"net"
 	"sync"
@@ -217,10 +218,13 @@ func (c *FastHTTPClient) do(req *fasthttp.Request, addr string, option *HTTPOpti
 
 func (c *FastHTTPClient) doNonNilReqResp(req *fasthttp.Request, resp *fasthttp.Response, addr string, option *HTTPOption) error {
 	if req == nil {
-		panic("BUG: req cannot be nil")
+		//panic("BUG: req cannot be nil")
+		//直接抛异常太不优雅，改成日志记录吧
+		log.Error("req cannot be nil")
 	}
 	if resp == nil {
-		panic("BUG: resp cannot be nil")
+		log.Error("resp cannot be nil")
+		//panic("BUG: resp cannot be nil")
 	}
 
 	opt := option
@@ -269,6 +273,7 @@ func (c *FastHTTPClient) doNonNilReqResp(req *fasthttp.Request, resp *fasthttp.R
 	}
 
 	bw := c.acquireWriter(conn, opt)
+	//返回服务器响应
 	err = req.Write(bw)
 
 	if resetConnection {
