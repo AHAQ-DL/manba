@@ -28,6 +28,7 @@ type copyReq struct {
 	requestTag string
 }
 
+//准备
 func (req *copyReq) prepare() {
 	if req.needRewrite() {
 		// if not use rewrite, it only change uri path and query string
@@ -313,6 +314,7 @@ func (r *dispatcher) adjustByRouting(apiID uint64, reqCtx *fasthttp.RequestCtx, 
 	}
 }
 
+//从集群中选择服务
 func (r *dispatcher) selectServerFromCluster(ctx *fasthttp.RequestCtx, id uint64) *serverRuntime {
 	cluster, ok := r.clusters[id]
 	if !ok {

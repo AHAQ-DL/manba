@@ -211,7 +211,9 @@ func (c *FastHTTPClient) Do(req *fasthttp.Request, addr string, option *HTTPOpti
 }
 
 func (c *FastHTTPClient) do(req *fasthttp.Request, addr string, option *HTTPOption) (*fasthttp.Response, error) {
+	//获取响应
 	resp := fasthttp.AcquireResponse()
+	//
 	err := c.doNonNilReqResp(req, resp, addr, option)
 	return resp, err
 }

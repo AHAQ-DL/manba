@@ -8,6 +8,7 @@ import (
 // PrepareFilter Must be in the first of the filter chain,
 // used to get some public information into the context,
 // to avoid subsequent filters to do duplicate things.
+//预备过滤器，必须位于过滤器链的第一个，用于获取一些公共信息， 避免后续过滤器做些重复的事情
 type PrepareFilter struct {
 	filter.BaseFilter
 }

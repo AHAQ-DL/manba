@@ -15,6 +15,8 @@ const (
 	typeRequestReject  = "reject"
 )
 
+//prometheus 程序检测组件
+
 var (
 	apiRequestCounterVec = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
@@ -33,6 +35,8 @@ var (
 			Buckets:   prometheus.ExponentialBuckets(0.0005, 2.0, 20),
 		}, []string{"name"})
 )
+
+//metric 指标
 
 func init() {
 	prometheus.Register(apiRequestCounterVec)

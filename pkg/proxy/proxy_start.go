@@ -85,8 +85,10 @@ func (p *Proxy) newHTTPServer() *fasthttp.Server {
 	}
 }
 
+//开启监听服务
 func (p *Proxy) startHTTP() {
 	log.Infof("start http at %s", p.cfg.Addr)
+	//利用fasthttp创建服务，保证proxy节点的高并发性
 	s := p.newHTTPServer()
 	err := s.ListenAndServe(p.cfg.Addr)
 	if err != nil {

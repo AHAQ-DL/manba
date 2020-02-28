@@ -12,6 +12,7 @@ var (
 )
 
 // XForwardForFilter XForwardForFilter
+//XFF分析(识别最原始IP的请求头)
 type XForwardForFilter struct {
 	filter.BaseFilter
 }

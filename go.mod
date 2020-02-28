@@ -29,7 +29,7 @@ require (
 	github.com/juju/ratelimit v1.0.1
 	github.com/koding/websocketproxy v0.0.0-20180716164433-0fa3f994f6e7
 	github.com/labstack/echo v0.0.0-20180412143600-6d227dfea4d2
-	github.com/labstack/gommon v0.0.0-20180613044413-d6898124de91 // indirect
+	github.com/labstack/gommon v0.0.0-20180613044413-d6898124de91
 	github.com/mattn/go-colorable v0.0.0-20170801030607-167de6bfdfba // indirect
 	github.com/mattn/go-isatty v0.0.0-20170925053441-0360b2af4f38 // indirect
 	github.com/matttproud/golang_protobuf_extensions v0.0.0-20160424113007-c12348ce28de // indirect

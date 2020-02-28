@@ -9,6 +9,7 @@ import (
 	"github.com/fagongzi/util/atomic"
 )
 
+//分析点
 type point struct {
 	requests          atomic.Int64
 	rejects           atomic.Int64
@@ -94,6 +95,7 @@ func (a *Analysis) RemoveTarget(key uint64) {
 }
 
 // AddTarget add analysis point on a key
+//添加目标分析点
 func (a *Analysis) AddTarget(key uint64, interval time.Duration) {
 	if interval == 0 {
 		return
@@ -123,6 +125,7 @@ func (a *Analysis) AddTarget(key uint64, interval time.Duration) {
 }
 
 // GetRecentlyRequestCount return the server request count in spec duration
+//返回指定持续时间内的服务器请求计数
 func (a *Analysis) GetRecentlyRequestCount(server uint64, interval time.Duration) int {
 	point := a.getPoint(server, interval)
 	if point == nil {
@@ -134,6 +137,7 @@ func (a *Analysis) GetRecentlyRequestCount(server uint64, interval time.Duration
 }
 
 // GetRecentlyMax return max latency in spec secs
+//返回最大延迟秒数
 func (a *Analysis) GetRecentlyMax(server uint64, interval time.Duration) int {
 	point := a.getPoint(server, interval)
 	if point == nil {
@@ -145,6 +149,7 @@ func (a *Analysis) GetRecentlyMax(server uint64, interval time.Duration) int {
 }
 
 // GetRecentlyMin return min latency in spec duration
+//返回最小延迟秒数
 func (a *Analysis) GetRecentlyMin(server uint64, interval time.Duration) int {
 	point := a.getPoint(server, interval)
 	if point == nil {
@@ -156,6 +161,7 @@ func (a *Analysis) GetRecentlyMin(server uint64, interval time.Duration) int {
 }
 
 // GetRecentlyAvg return avg latency in spec secs
+//返回平均延时秒数
 func (a *Analysis) GetRecentlyAvg(server uint64, interval time.Duration) int {
 	point := a.getPoint(server, interval)
 	if point == nil {
@@ -167,6 +173,7 @@ func (a *Analysis) GetRecentlyAvg(server uint64, interval time.Duration) int {
 }
 
 // GetQPS return qps in spec duration
+//返回指定持续时间内的QPS
 func (a *Analysis) GetQPS(server uint64, interval time.Duration) int {
 	point := a.getPoint(server, interval)
 	if point == nil {
@@ -178,6 +185,7 @@ func (a *Analysis) GetQPS(server uint64, interval time.Duration) int {
 }
 
 // GetRecentlyRejectCount return reject count in spec duration
+//返回指定持续时间内的拒绝计数
 func (a *Analysis) GetRecentlyRejectCount(server uint64, interval time.Duration) int {
 	point := a.getPoint(server, interval)
 	if point == nil {
@@ -189,6 +197,7 @@ func (a *Analysis) GetRecentlyRejectCount(server uint64, interval time.Duration)
 }
 
 // GetRecentlyRequestSuccessedRate return successed rate in spec secs
+//返回指定时间内的成功率
 func (a *Analysis) GetRecentlyRequestSuccessedRate(server uint64, interval time.Duration) int {
 	point := a.getPoint(server, interval)
 	if point == nil {
@@ -204,6 +213,7 @@ func (a *Analysis) GetRecentlyRequestSuccessedRate(server uint64, interval time.
 }
 
 // GetRecentlyRequestFailureRate return failure rate in spec secs
+//返回指定时间内的失败率
 func (a *Analysis) GetRecentlyRequestFailureRate(server uint64, interval time.Duration) int {
 	point := a.getPoint(server, interval)
 	if point == nil {
@@ -219,6 +229,7 @@ func (a *Analysis) GetRecentlyRequestFailureRate(server uint64, interval time.Du
 }
 
 // GetRecentlyRequestSuccessedCount return successed request count in spec secs
+//返回指定时间内的成功请求计数
 func (a *Analysis) GetRecentlyRequestSuccessedCount(server uint64, interval time.Duration) int {
 	point := a.getPoint(server, interval)
 	if point == nil {
@@ -230,6 +241,7 @@ func (a *Analysis) GetRecentlyRequestSuccessedCount(server uint64, interval time
 }
 
 // GetRecentlyRequestFailureCount return failure request count in spec duration
+//返回指定时间内的失败请求计数
 func (a *Analysis) GetRecentlyRequestFailureCount(server uint64, interval time.Duration) int {
 	point := a.getPoint(server, interval)
 	if point == nil {
@@ -241,6 +253,7 @@ func (a *Analysis) GetRecentlyRequestFailureCount(server uint64, interval time.D
 }
 
 // GetContinuousFailureCount return Continuous failure request count in spec secs
+//返回在指定时间内的连续故障请求次数
 func (a *Analysis) GetContinuousFailureCount(key uint64) int {
 	p, ok := a.points.Load(key)
 	if !ok {
@@ -252,6 +265,7 @@ func (a *Analysis) GetContinuousFailureCount(key uint64) int {
 }
 
 // Reject incr reject count
+//增加拒绝计数
 func (a *Analysis) Reject(key uint64) {
 	if p, ok := a.points.Load(key); ok {
 		p.(*point).rejects.Incr()
@@ -259,6 +273,7 @@ func (a *Analysis) Reject(key uint64) {
 }
 
 // Failure incr failure count
+//增加失败计数
 func (a *Analysis) Failure(key uint64) {
 	if v, ok := a.points.Load(key); ok {
 		p := v.(*point)
@@ -268,6 +283,7 @@ func (a *Analysis) Failure(key uint64) {
 }
 
 // Request incr request count
+//增加请求计数
 func (a *Analysis) Request(key uint64) {
 	if p, ok := a.points.Load(key); ok {
 		p.(*point).requests.Incr()
@@ -275,6 +291,7 @@ func (a *Analysis) Request(key uint64) {
 }
 
 // Response incr successed count
+//增加成功计数
 func (a *Analysis) Response(key uint64, cost int64) {
 	if v, ok := a.points.Load(key); ok {
 		p := v.(*point)

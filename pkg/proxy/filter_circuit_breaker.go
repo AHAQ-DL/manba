@@ -18,6 +18,7 @@ var (
 )
 
 // CircuitBreakeFilter CircuitBreakeFilter
+//熔断分析
 type CircuitBreakeFilter struct {
 	filter.BaseFilter
 }
@@ -44,13 +45,17 @@ func (f *CircuitBreakeFilter) Pre(c filter.Context) (statusCode int, err error) 
 		return f.BaseFilter.Pre(c)
 	}
 
+	//受保护的资源状态
 	protectedResourceStatus := pc.circuitStatus()
+	//熔断资源ID
 	protectedResource := pc.circuitResourceID()
 
 	switch protectedResourceStatus {
 	case metapb.Open:
+		//近期请求失败率 大于 关闭故障率
 		if c.Analysis().GetRecentlyRequestFailureRate(protectedResource, time.Duration(cb.RateCheckPeriod)) >= int(cb.FailureRateToClose) {
 			pc.changeCircuitStatusToClose()
+			//拒绝
 			c.Analysis().Reject(protectedResource)
 			return http.StatusServiceUnavailable, ErrCircuitClose
 		}
@@ -64,12 +69,14 @@ func (f *CircuitBreakeFilter) Pre(c filter.Context) (statusCode int, err error) 
 		c.Analysis().Reject(protectedResource)
 		return http.StatusServiceUnavailable, ErrCircuitHalfLimited
 	default:
+		//默认拒绝？
 		c.Analysis().Reject(protectedResource)
 		return http.StatusServiceUnavailable, ErrCircuitClose
 	}
 }
 
 // Post execute after proxy
+//代理后执行
 func (f *CircuitBreakeFilter) Post(c filter.Context) (statusCode int, err error) {
 	pc := c.(*proxyContext)
 	cb, _ := pc.circuitBreaker()

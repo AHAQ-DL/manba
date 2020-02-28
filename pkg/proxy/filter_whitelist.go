@@ -1,5 +1,6 @@
 package proxy
 
+//白名单过滤（根据IP）
 import (
 	"errors"
 

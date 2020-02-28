@@ -1,5 +1,7 @@
 package lb
 
+//负载均衡-轮询策略
+
 import (
 	"sync/atomic"
 

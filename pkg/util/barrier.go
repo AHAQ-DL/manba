@@ -54,6 +54,7 @@ func NewRateBarrierBase(rate, base int) *RateBarrier {
 }
 
 // Allow returns true if allowed
+//是否允许
 func (b *RateBarrier) Allow() bool {
 	return b.source[int(atomic.AddUint64(&b.op, 1))%b.base] < b.rate
 }

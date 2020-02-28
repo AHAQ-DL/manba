@@ -25,6 +25,7 @@ type CrossHeader struct {
 }
 
 // CrossDomainFilter cross domain
+//跨域
 type CrossDomainFilter struct {
 	filter.BaseFilter
 	cfg CrossCfg
@@ -61,6 +62,7 @@ func (f *CrossDomainFilter) Name() string {
 }
 
 // Pre execute before proxy
+//代理前执行
 func (f *CrossDomainFilter) Pre(c filter.Context) (statusCode int, err error) {
 	if bytes.Compare(c.OriginRequest().Method(), options) != 0 {
 		return f.BaseFilter.Pre(c)

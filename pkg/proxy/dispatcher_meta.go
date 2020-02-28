@@ -32,6 +32,7 @@ var (
 //载入元数据
 func (r *dispatcher) load() {
 	log.Info("load meteData")
+	//监听元数据变化
 	go r.watch()
 
 	r.loadProxies()

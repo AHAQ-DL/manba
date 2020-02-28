@@ -18,6 +18,7 @@ var (
 )
 
 // CachingFilter cache api result
+//缓存Api的结果
 type CachingFilter struct {
 	filter.BaseFilter
 

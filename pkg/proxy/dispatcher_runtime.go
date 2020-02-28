@@ -295,7 +295,7 @@ type apiRuntime struct {
 	meta                *metapb.API
 	nodes               []*apiNode
 	defaultCookies      []*fasthttp.Cookie
-	parsedWhitelist     []*ipSegment
+	parsedWhitelist     []*ipSegment //IP段
 	parsedBlacklist     []*ipSegment
 	parsedRenderObjects []*renderObject
 }

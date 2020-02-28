@@ -5,6 +5,7 @@ import (
 )
 
 // AnalysisFilter analysis filter
+//分析过滤
 type AnalysisFilter struct {
 	filter.BaseFilter
 }
